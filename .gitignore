@@ -53,3 +53,6 @@ ai-evaluator-production/
 *.log
 *.tmp
 .vscode/
+
+# claude
+.claude/
