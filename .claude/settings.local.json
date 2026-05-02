@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install *)",
+      "Bash(npm run *)",
+      "Bash(netstat -ano)",
+      "Bash(findstr :3000)",
+      "Bash(taskkill *)",
+      "Bash(npm uninstall *)",
+      "Bash(curl *)",
+      "Bash(git restore *)"
+    ]
+  }
+}

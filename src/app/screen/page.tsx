@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState, useRef } from 'react';
+import { useTranslations } from '@/lib/i18n';
 
 interface MotionConfig {
   id: string;
@@ -46,6 +47,7 @@ enum ScreenState {
 }
 
 export default function ScreenPage() {
+  const t = useTranslations('screen');
   const [data, setData] = useState<ScreenData | null>(null);
   const [config, setConfig] = useState<ScreenConfig | null>(null);
   const [loading, setLoading] = useState(true);
@@ -239,7 +241,7 @@ export default function ScreenPage() {
         }}
       >
         <div className="absolute inset-0 bg-black/50"></div>
-        <div className="text-white text-3xl font-bold animate-pulse z-10 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">Loading...</div>
+        <div className="text-white text-3xl font-bold animate-pulse z-10 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">{t('loading')}</div>
       </div>
     );
   }
@@ -294,13 +296,13 @@ export default function ScreenPage() {
 
           {/* 右侧：AI 评估详情 */}
           <div className="flex flex-col items-start justify-center text-white">
-            <div className="text-white text-4xl font-bold mb-6 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]" style={{ textShadow: '0 0 20px rgba(0,0,0,0.8), 0 0 40px rgba(0,0,0,0.6)' }}>AI 评估:</div>
+            <div className="text-white text-4xl font-bold mb-6 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]" style={{ textShadow: '0 0 20px rgba(0,0,0,0.8), 0 0 40px rgba(0,0,0,0.6)' }}>{t('aiEvaluation')}</div>
             
             {/* 子项列表 */}
             <div className="flex flex-col gap-3 mb-6">
               {/* 抬头率 */}
               <div className="flex items-center gap-2">
-                <span className="text-white/80 text-xl drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">• 抬头率：</span>
+                <span className="text-white/80 text-xl drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">• {t('audienceAttention')}：</span>
                 <span className="text-white text-xl font-semibold drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
                   {round?.audience_attention !== null && round?.audience_attention !== undefined ? `${round.audience_attention.toFixed(1)}%` : '--'}
                 </span>
@@ -308,7 +310,7 @@ export default function ScreenPage() {
               
               {/* 在座率 */}
               <div className="flex items-center gap-2">
-                <span className="text-white/80 text-xl drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">• 在座率：</span>
+                <span className="text-white/80 text-xl drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">• {t('occupancyRate')}：</span>
                 <span className="text-white text-xl font-semibold drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
                   {round?.occupancy_rate !== null && round?.occupancy_rate !== undefined ? `${round.occupancy_rate.toFixed(1)}%` : '--'}
                 </span>
@@ -316,7 +318,7 @@ export default function ScreenPage() {
               
               {/* 现场氛围（掌声、笑声） */}
               <div className="flex items-center gap-2">
-                <span className="text-white/80 text-xl drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">• 现场氛围（掌声、笑声）：</span>
+                <span className="text-white/80 text-xl drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">• {t('atmosphere')}：</span>
                 <span className="text-white text-xl font-semibold drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
                   {round?.atmosphere !== null && round?.atmosphere !== undefined ? round.atmosphere.toFixed(1) : '--'}
                 </span>
@@ -325,11 +327,11 @@ export default function ScreenPage() {
             
             {/* 综合得分 - 较大字体 */}
             <div className="flex items-center gap-2">
-              <span className="text-white/90 text-2xl font-medium drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">第 {round?.round_number} 位宣讲员综合得分：</span>
+              <span className="text-white/90 text-2xl font-medium drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">{t('roundN', { n: round?.round_number })}{t('compositeScore')}：</span>
               <span className="text-white text-3xl font-bold drop-shadow-[0_4px_8px_rgba(0,0,0,0.9)]" style={{ textShadow: '0 0 20px rgba(0,0,0,0.8), 0 0 40px rgba(0,0,0,0.6)' }}>
                 {round?.final_score !== null && round?.final_score !== undefined ? round.final_score.toFixed(1) : '--'}
               </span>
-              <span className="text-white/80 text-2xl drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">分</span>
+              <span className="text-white/80 text-2xl drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">{t('points')}</span>
             </div>
           </div>
         </div>

@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useRef } from 'react';
 import ScreenPreview, { ScreenPreviewRef } from './ScreenPreview';
-import { useTranslations } from '@/lib/i18n';
 
 let videojs: any;
 if (typeof window !== 'undefined') {
@@ -26,7 +25,6 @@ interface VideoMonitorProps {
 }
 
 export default function VideoMonitor({ selectedSession, currentRound, user, onRoundChange, screenRefreshKey }: VideoMonitorProps) {
-  const t = useTranslations('videoMonitor');
   const isAdmin = user.role === 'admin';
   const [cameras, setCameras] = useState<{ id: string; name: string }[]>([]);
   const [audioDevices, setAudioDevices] = useState<{ id: string; name: string }[]>([]);
@@ -275,7 +273,7 @@ export default function VideoMonitor({ selectedSession, currentRound, user, onRo
 
   const startCapture = async () => {
     if (!selectedCamera) {
-      alert(t('selectCamera'));
+      alert('请选择摄像头');
       return;
     }
     try {
@@ -295,7 +293,7 @@ export default function VideoMonitor({ selectedSession, currentRound, user, onRo
       }
     } catch (error) {
       console.error('Failed to start camera:', error);
-      alert(t('cameraError'));
+      alert('无法启动摄像头');
     }
   };
 
@@ -343,7 +341,7 @@ export default function VideoMonitor({ selectedSession, currentRound, user, onRo
   return (
     <div className="h-full flex flex-col bg-[#1a1a1a] rounded-lg shadow-md border border-gray-800">
       <div className="p-4 border-b border-gray-800 flex justify-between items-center">
-        <h2 className="text-lg font-semibold text-gray-100">{t('title')}</h2>
+        <h2 className="text-lg font-semibold text-gray-100">视频监看</h2>
         <div className="flex items-center space-x-3">
           <button
             onClick={isCapturing ? stopCapture : startCapture}
@@ -354,13 +352,13 @@ export default function VideoMonitor({ selectedSession, currentRound, user, onRo
                 : 'bg-green-600 text-white hover:bg-green-700'
             }`}
           >
-            {isCapturing ? t('stopCapture') : t('startCapture')}
+            {isCapturing ? '停止采集' : '开始采集'}
           </button>
           <button
             onClick={() => setShowSettings(true)}
             disabled={!isAdmin}
             className="p-2 rounded-lg hover:bg-gray-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
-            title={t('settings')}
+            title="设置"
           >
             <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
@@ -392,7 +390,7 @@ export default function VideoMonitor({ selectedSession, currentRound, user, onRo
                 }
               }}
               className={`p-2 rounded-lg transition ${isMuted ? 'bg-red-600 hover:bg-red-700' : 'bg-gray-600 hover:bg-gray-700'}`}
-              title={isMuted ? t('unmute') : t('mute')}
+              title={isMuted ? '取消静音' : '静音'}
             >
               {isMuted ? (
                 <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -418,21 +416,21 @@ export default function VideoMonitor({ selectedSession, currentRound, user, onRo
               disabled={!isAdmin}
               className="px-3 py-1 text-xs bg-gray-600 text-white rounded hover:bg-gray-700 transition-colors whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {t('clearEvaluation')}
+              清除评估
             </button>
             <button
               onClick={() => screenPreviewRef.current?.openScreen()}
               disabled={!isAdmin}
               className="px-3 py-1 text-xs bg-indigo-600 text-white rounded hover:bg-indigo-700 transition-colors whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {t('openScreen')}
+              跳转大屏
             </button>
             <button
               onClick={() => screenPreviewRef.current?.uploadBackground()}
               disabled={!isAdmin}
               className="px-3 py-1 text-xs bg-green-600 text-white rounded hover:bg-green-700 transition-colors whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {t('uploadBackground')}
+              上传背景图
             </button>
           </div>
         </div>
@@ -442,18 +440,18 @@ export default function VideoMonitor({ selectedSession, currentRound, user, onRo
       {showSettings && (
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50" onClick={() => setShowSettings(false)}>
           <div className="bg-[#1a1a1a] rounded-lg p-6 w-96 border border-gray-700" onClick={(e) => e.stopPropagation()}>
-            <h3 className="text-lg font-semibold mb-4 text-gray-100">{t('videoSettings')}</h3>
+            <h3 className="text-lg font-semibold mb-4 text-gray-100">视频设置</h3>
             
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-400 mb-1">{t('selectCameraLabel')}</label>
+                <label className="block text-sm font-medium text-gray-400 mb-1">选择摄像头</label>
                 <select
                   value={selectedCamera}
                   onChange={(e) => setSelectedCamera(e.target.value)}
                   className="w-full bg-[#252525] border border-gray-600 rounded-lg px-3 py-2 text-gray-100"
                   disabled={isCapturing}
                 >
-                  <option value="">{t('selectCamera')}</option>
+                  <option value="">请选择摄像头</option>
                   {cameras.map((camera) => (
                     <option key={camera.id} value={camera.id}>
                       {camera.name}
@@ -463,14 +461,14 @@ export default function VideoMonitor({ selectedSession, currentRound, user, onRo
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-400 mb-1">{t('selectAudioLabel')}</label>
+                <label className="block text-sm font-medium text-gray-400 mb-1">选择音频源</label>
                 <select
                   value={selectedAudio}
                   onChange={(e) => setSelectedAudio(e.target.value)}
                   className="w-full bg-[#252525] border border-gray-600 rounded-lg px-3 py-2 text-gray-100"
                   disabled={isCapturing}
                 >
-                  <option value="">{t('selectAudio')}</option>
+                  <option value="">不使用音频</option>
                   {audioDevices.map((audio) => (
                     <option key={audio.id} value={audio.id}>
                       {audio.name}
@@ -484,17 +482,17 @@ export default function VideoMonitor({ selectedSession, currentRound, user, onRo
                   onClick={() => rotateVideo('left')}
                   disabled={!isCapturing || !isAdmin}
                   className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
-                  title={t('rotateLeft')}
+                  title="左转90度"
                 >
-                  {t('rotateLeft')}
+                  左转
                 </button>
                 <button
                   onClick={() => rotateVideo('right')}
                   disabled={!isCapturing || !isAdmin}
                   className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
-                  title={t('rotateRight')}
+                  title="右转90度"
                 >
-                  {t('rotateRight')}
+                  右转
                 </button>
               </div>
             </div>

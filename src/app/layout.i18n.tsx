@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { I18nProvider } from '@/lib/i18n';
 
 export const dynamic = 'force-dynamic';
 
@@ -17,9 +16,7 @@ export default function RootLayout({
   return (
     <html lang="zh-CN">
       <body className="antialiased">
-        <I18nProvider initialLocale="zh">
-          {children}
-        </I18nProvider>
+        {children}
       </body>
     </html>
   );

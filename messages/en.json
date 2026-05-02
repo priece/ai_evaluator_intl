@@ -1,0 +1,118 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "yes": "Yes",
+    "no": "No",
+    "ok": "OK",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "submit": "Submit",
+    "close": "Close"
+  },
+  "auth": {
+    "login": "Login",
+    "loginTitle": "AI Judge Data Collection and Analysis System",
+    "loginSubtitle": "Please login to continue",
+    "username": "Username",
+    "password": "Password",
+    "usernamePlaceholder": "Enter username",
+    "passwordPlaceholder": "Enter password",
+    "loginLoading": "Logging in...",
+    "loginFailed": "Login failed",
+    "loginFailedRetry": "Login failed, please try again",
+    "logout": "Logout",
+    "welcome": "Welcome",
+    "admin": "Admin",
+    "guest": "Guest"
+  },
+  "navigation": {
+    "mainTitle": "AI Judge Data Collection and Analysis System"
+  },
+  "videoMonitor": {
+    "title": "Video Monitor",
+    "startCapture": "Start Capture",
+    "stopCapture": "Stop Capture",
+    "settings": "Settings",
+    "selectCamera": "Please select camera",
+    "selectAudio": "No audio",
+    "selectCameraLabel": "Select Camera",
+    "selectAudioLabel": "Select Audio Source",
+    "rotateLeft": "Rotate Left",
+    "rotateRight": "Rotate Right",
+    "videoSettings": "Video Settings",
+    "clearEvaluation": "Clear Evaluation",
+    "openScreen": "Open Screen",
+    "uploadBackground": "Upload Background",
+    "unmute": "Unmute",
+    "mute": "Mute",
+    "cameraError": "Failed to start camera",
+    "captureError": "Start failed"
+  },
+  "businessPanel": {
+    "sessionManagement": "Session Management",
+    "createSession": "Create Session",
+    "selectSession": "Please select session",
+    "sessionName": "Session Name",
+    "currentRound": "Current Presentation Round",
+    "createdAt": "Created At",
+    "presentationManagement": "Presentation Management",
+    "createPresentation": "Create Presentation",
+    "noPresentations": "No presentations, please create one",
+    "noSessionSelected": "Please select a session first",
+    "roundN": "Presenter #{n}",
+    "score": "pts",
+    "startPresentation": "Start Presentation",
+    "endPresentation": "End Presentation",
+    "startEvaluation": "Start Evaluation",
+    "evaluating": "Evaluating...",
+    "reevaluate": "Re-evaluate",
+    "waitingForKey": "Waiting for keyboard input (0-9)...",
+    "publish": "Publish",
+    "presentationDuration": "Presentation Duration",
+    "elapsedDuration": "Elapsed Duration",
+    "sessionNamePlaceholder": "Enter session name",
+    "createSessionTitle": "Create Session",
+    "pleaseEnterSessionName": "Please enter session name"
+  },
+  "screen": {
+    "aiEvaluation": "AI Evaluation",
+    "roundN": "Presenter #{n}",
+    "compositeScore": "Composite Score",
+    "points": "pts",
+    "loading": "Loading...",
+    "uploadBackgroundTitle": "Upload Background",
+    "selectLocalFile": "Select local image file to upload:",
+    "uploading": "Uploading...",
+    "uploadSuccess": "Background uploaded successfully!",
+    "uploadFailed": "Upload failed",
+    "clearSuccess": "Cleared successfully",
+    "clearFailed": "Clear failed",
+    "audienceAttention": "Audience Attention",
+    "occupancyRate": "Occupancy Rate",
+    "atmosphere": "Atmosphere (Applause, Laughter)"
+  },
+  "status": {
+    "notStarted": "Not Started",
+    "performing": "Performing",
+    "performanceEnded": "Performance Ended",
+    "evaluating": "Evaluating",
+    "evaluated": "Evaluated",
+    "roundEnded": "Published"
+  },
+  "logs": {
+    "title": "System Logs",
+    "noLogs": "No logs yet"
+  },
+  "time": {
+    "minute": "min",
+    "second": "sec"
+  },
+  "language": {
+    "switchTo": "Switch Language",
+    "zh": "中文",
+    "en": "English"
+  }
+}

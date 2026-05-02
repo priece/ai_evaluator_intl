@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Login from '@/components/Login';
 import MainContent from '@/components/MainContent';
+import { useTranslations } from '@/lib/i18n';
 
 interface User {
   id: string;
@@ -11,6 +12,7 @@ interface User {
 }
 
 export default function Home() {
+  const t = useTranslations();
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -30,6 +32,7 @@ export default function Home() {
     } catch (error) {
       console.error('Failed to check login status:', error);
     } finally {
+      // 确保无论成功失败都会结束 loading 状态
       setLoading(false);
     }
   };
@@ -50,7 +53,7 @@ export default function Home() {
   if (loading) {
     return (
       <div className="min-h-screen bg-[#0f0f0f] flex items-center justify-center">
-        <div className="text-gray-400">加载中...</div>
+        <div className="text-gray-400">{t('common.loading')}</div>
       </div>
     );
   }

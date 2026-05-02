@@ -1,0 +1,118 @@
+{
+  "common": {
+    "loading": "加载中...",
+    "yes": "是",
+    "no": "否",
+    "ok": "确定",
+    "cancel": "取消",
+    "save": "保存",
+    "delete": "删除",
+    "edit": "编辑",
+    "create": "创建",
+    "submit": "提交",
+    "close": "关闭"
+  },
+  "auth": {
+    "login": "登录",
+    "loginTitle": "AI 评委数据采集分析系统",
+    "loginSubtitle": "请登录以继续",
+    "username": "用户名",
+    "password": "密码",
+    "usernamePlaceholder": "请输入用户名",
+    "passwordPlaceholder": "请输入密码",
+    "loginLoading": "登录中...",
+    "loginFailed": "登录失败",
+    "loginFailedRetry": "登录失败，请重试",
+    "logout": "退出登录",
+    "welcome": "欢迎",
+    "admin": "管理员",
+    "guest": "访客"
+  },
+  "navigation": {
+    "mainTitle": "AI 评委数据采集分析系统"
+  },
+  "videoMonitor": {
+    "title": "视频监看",
+    "startCapture": "开始采集",
+    "stopCapture": "停止采集",
+    "settings": "设置",
+    "selectCamera": "请选择摄像头",
+    "selectAudio": "不使用音频",
+    "selectCameraLabel": "选择摄像头",
+    "selectAudioLabel": "选择音频源",
+    "rotateLeft": "左转",
+    "rotateRight": "右转",
+    "videoSettings": "视频设置",
+    "clearEvaluation": "清除评估",
+    "openScreen": "跳转大屏",
+    "uploadBackground": "上传背景图",
+    "unmute": "取消静音",
+    "mute": "静音",
+    "cameraError": "无法启动摄像头",
+    "captureError": "启动失败"
+  },
+  "businessPanel": {
+    "sessionManagement": "场次管理",
+    "createSession": "新建场次",
+    "selectSession": "请选择场次",
+    "sessionName": "场次名称",
+    "currentRound": "当前宣讲轮次",
+    "createdAt": "创建时间",
+    "presentationManagement": "宣讲活动管理",
+    "createPresentation": "新建宣讲",
+    "noPresentations": "暂无宣讲，请新建宣讲",
+    "noSessionSelected": "请先选择场次",
+    "roundN": "第 {n} 位宣讲员",
+    "score": "分",
+    "startPresentation": "开始宣讲",
+    "endPresentation": "结束宣讲",
+    "startEvaluation": "开始评估",
+    "evaluating": "评估中...",
+    "reevaluate": "重新评估",
+    "waitingForKey": "等待键盘输入(0-9)...",
+    "publish": "发布",
+    "presentationDuration": "宣讲时长",
+    "elapsedDuration": "已宣讲时长",
+    "sessionNamePlaceholder": "请输入场次名称",
+    "createSessionTitle": "新建场次",
+    "pleaseEnterSessionName": "请输入场次名称"
+  },
+  "screen": {
+    "aiEvaluation": "AI 评估",
+    "roundN": "第 {n} 位宣讲员",
+    "compositeScore": "综合得分",
+    "points": "分",
+    "loading": "Loading...",
+    "uploadBackgroundTitle": "上传背景图",
+    "selectLocalFile": "选择本地图片文件上传：",
+    "uploading": "上传中...",
+    "uploadSuccess": "背景图上传成功！",
+    "uploadFailed": "上传失败",
+    "clearSuccess": "清除成功",
+    "clearFailed": "清除失败",
+    "audienceAttention": "抬头率",
+    "occupancyRate": "在座率",
+    "atmosphere": "现场氛围（掌声、笑声）"
+  },
+  "status": {
+    "notStarted": "未开始",
+    "performing": "宣讲中",
+    "performanceEnded": "宣讲结束",
+    "evaluating": "评估中",
+    "evaluated": "已评估",
+    "roundEnded": "已发布"
+  },
+  "logs": {
+    "title": "系统日志",
+    "noLogs": "暂无日志"
+  },
+  "time": {
+    "minute": "分",
+    "second": "秒"
+  },
+  "language": {
+    "switchTo": "切换语言",
+    "zh": "中文",
+    "en": "English"
+  }
+}

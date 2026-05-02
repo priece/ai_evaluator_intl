@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useTranslations } from '@/lib/i18n';
+import { useTranslations } from 'next-intl';
 
 interface LoginProps {
   onLoginSuccess: (user: { id: string; username: string; role: string }) => void;

@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState, useRef, forwardRef, useImperativeHandle } from 'react';
-import { useTranslations } from '@/lib/i18n';
 
 interface MotionConfig {
   id: string;
@@ -55,7 +54,6 @@ enum ScreenState {
 }
 
 const ScreenPreview = forwardRef<ScreenPreviewRef, ScreenPreviewProps>(({ refreshKey }, ref) => {
-  const t = useTranslations('screen');
   const [data, setData] = useState<ScreenData | null>(null);
   const [config, setConfig] = useState<ScreenConfig | null>(null);
   const [screenState, setScreenState] = useState<ScreenState>(ScreenState.BACKGROUND);
@@ -171,9 +169,9 @@ const ScreenPreview = forwardRef<ScreenPreviewRef, ScreenPreviewProps>(({ refres
   const getMotionByScore = (score: number | null): MotionConfig | null => {
     if (score === null || !config) return null;
     
-    if (score >= 0 && score <= 69) {
+    if (score >= 0 && score < 70) {
       return config.motions.find(m => m.id === 'motion_00') || null;
-    } else if (score >= 70 && score <= 89) {
+    } else if (score >= 70 && score < 90) {
       return config.motions.find(m => m.id === 'motion_01') || null;
     } else if (score >= 90 && score <= 100) {
       return config.motions.find(m => m.id === 'motion_02') || null;
@@ -212,7 +210,7 @@ const ScreenPreview = forwardRef<ScreenPreviewRef, ScreenPreviewProps>(({ refres
       });
     };
 
-    animationRef.current = setInterval(animate, 100);
+    animationRef.current = setInterval(animate, 50);
 
     return () => {
       if (animationRef.current) {
@@ -237,11 +235,11 @@ const ScreenPreview = forwardRef<ScreenPreviewRef, ScreenPreviewProps>(({ refres
         setData(null);
         setScreenState(ScreenState.BACKGROUND);
       } else {
-        alert(result.message || t('clearFailed'));
+        alert(result.message || '清除失败');
       }
     } catch (error) {
       console.error('Clear publish error:', error);
-      alert(t('clearFailed'));
+      alert('清除失败');
     }
   };
 
@@ -272,13 +270,13 @@ const ScreenPreview = forwardRef<ScreenPreviewRef, ScreenPreviewProps>(({ refres
         // 刷新配置以获取新背景
         setBackgroundTimestamp(Date.now());
         await fetchConfig();
-        alert(t('uploadSuccess'));
+        alert('背景图上传成功！');
       } else {
-        alert(result.message || t('uploadFailed'));
+        alert(result.message || '上传失败');
       }
     } catch (error) {
       console.error('Upload error:', error);
-      alert(t('uploadFailed'));
+      alert('上传失败');
     } finally {
       setIsUploading(false);
       setIsUploadModalOpen(false);
@@ -342,42 +340,18 @@ const ScreenPreview = forwardRef<ScreenPreviewRef, ScreenPreviewProps>(({ refres
 
                 {/* 右侧：AI 评估详情 */}
                 <div className="flex flex-col items-start justify-center text-white" style={{ width: '60%' }}>
-                  <div className="text-white text-xl font-bold mb-3 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]" style={{ textShadow: '0 0 20px rgba(0,0,0,0.8), 0 0 40px rgba(0,0,0,0.6)' }}>{t('aiEvaluation')}</div>
-                  
-                  {/* 子项列表 */}
-                  <div className="flex flex-col gap-1 mb-3">
-                    {/* 抬头率 */}
-                    <div className="flex items-center gap-1">
-                      <span className="text-white/80 text-sm drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">• {t('audienceAttention')}：</span>
-                      <span className="text-white text-sm font-semibold drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
-                        {data?.round?.audience_attention !== null && data?.round?.audience_attention !== undefined ? `${data.round.audience_attention.toFixed(1)}%` : '--'}
-                      </span>
-                    </div>
-                    
-                    {/* 在座率 */}
-                    <div className="flex items-center gap-1">
-                      <span className="text-white/80 text-sm drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">• {t('occupancyRate')}：</span>
-                      <span className="text-white text-sm font-semibold drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
-                        {data?.round?.occupancy_rate !== null && data?.round?.occupancy_rate !== undefined ? `${data.round.occupancy_rate.toFixed(1)}%` : '--'}
-                      </span>
-                    </div>
-                    
-                    {/* 现场氛围（掌声、笑声） */}
-                    <div className="flex items-center gap-1">
-                      <span className="text-white/80 text-sm drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">• {t('atmosphere')}：</span>
-                      <span className="text-white text-sm font-semibold drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
-                        {data?.round?.atmosphere !== null && data?.round?.atmosphere !== undefined ? data.round.atmosphere.toFixed(1) : '--'}
-                      </span>
-                    </div>
-                  </div>
+                  <div className="text-white text-xl font-bold mb-3 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]" style={{ textShadow: '0 0 20px rgba(0,0,0,0.8), 0 0 40px rgba(0,0,0,0.6)' }}>AI 评估:</div>
                   
                   {/* 综合得分 - 较大字体 */}
-                  <div className="flex items-center gap-1">
-                    <span className="text-white/90 text-base font-medium drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">{t('roundN', { n: data?.round?.round_number })}{t('compositeScore')}：</span>
-                    <span className="text-white text-xl font-bold drop-shadow-[0_4px_8px_rgba(0,0,0,0.9)]" style={{ textShadow: '0 0 20px rgba(0,0,0,0.8), 0 0 40px rgba(0,0,0,0.6)' }}>
-                      {data?.round?.final_score !== null && data?.round?.final_score !== undefined ? data.round.final_score.toFixed(1) : '--'}
-                    </span>
-                    <span className="text-white/80 text-base drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">{t('points')}</span>
+                  <div className="flex flex-col gap-1">
+                    <span className="text-white/90 text-base font-medium drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">第 {data?.round?.round_number} 位宣讲员</span>
+                    <div className="flex items-center gap-1">
+                      <span className="text-white/90 text-base font-medium drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">综合得分：</span>
+                      <span className="text-white text-xl font-bold drop-shadow-[0_4px_8px_rgba(0,0,0,0.9)]" style={{ textShadow: '0 0 20px rgba(0,0,0,0.8), 0 0 40px rgba(0,0,0,0.6)' }}>
+                        {data?.round?.final_score !== null && data?.round?.final_score !== undefined ? data.round.final_score.toFixed(1) : '--'}
+                      </span>
+                      <span className="text-white/80 text-base drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">分</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -392,9 +366,9 @@ const ScreenPreview = forwardRef<ScreenPreviewRef, ScreenPreviewProps>(({ refres
       {isUploadModalOpen && (
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
           <div className="bg-[#1a1a1a] rounded-lg p-6 w-96 border border-gray-700">
-            <h3 className="text-lg font-semibold mb-4 text-gray-100">{t('uploadBackgroundTitle')}</h3>
+            <h3 className="text-lg font-semibold mb-4 text-gray-100">上传背景图</h3>
             <div className="mb-4">
-              <p className="text-sm text-gray-400 mb-2">{t('selectLocalFile')}</p>
+              <p className="text-sm text-gray-400 mb-2">选择本地图片文件上传：</p>
               <input
                 ref={fileInputRef}
                 type="file"
@@ -410,11 +384,11 @@ const ScreenPreview = forwardRef<ScreenPreviewRef, ScreenPreviewProps>(({ refres
                 className="px-4 py-2 bg-gray-700 text-gray-300 rounded-lg hover:bg-gray-600"
                 disabled={isUploading}
               >
-                {t('common.cancel')}
+                取消
               </button>
             </div>
             {isUploading && (
-              <div className="mt-2 text-center text-sm text-blue-400">{t('uploading')}</div>
+              <div className="mt-2 text-center text-sm text-blue-400">上传中...</div>
             )}
           </div>
         </div>

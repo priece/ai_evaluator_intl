@@ -3,8 +3,6 @@
 import { useState, useEffect, useRef } from 'react';
 import VideoMonitor from '@/components/VideoMonitor';
 import BusinessPanel from '@/components/BusinessPanel';
-import LanguageSwitcher from '@/components/LanguageSwitcher';
-import { useTranslations } from '@/lib/i18n';
 
 interface User {
   id: string;
@@ -18,7 +16,6 @@ interface MainContentProps {
 }
 
 export default function MainContent({ user, onLogout }: MainContentProps) {
-  const t = useTranslations();
   const [selectedSession, setSelectedSession] = useState<any>(null);
   const [currentRound, setCurrentRound] = useState<any>(null);
   const [highlightRound, setHighlightRound] = useState<any>(null);
@@ -175,17 +172,16 @@ export default function MainContent({ user, onLogout }: MainContentProps) {
       {/* 顶部导航栏 */}
       <nav className="bg-[#1a1a1a] shadow-md h-14 flex-shrink-0 border-b border-gray-800">
         <div className="h-full px-4 flex justify-between items-center">
-          <h1 className="text-xl font-bold text-blue-400">{t('navigation.mainTitle')}</h1>
+          <h1 className="text-xl font-bold text-blue-400">AI 评委数据采集分析系统</h1>
           <div className="flex items-center space-x-4">
-            <LanguageSwitcher />
             <span className="text-gray-400 text-sm">
-              {t('auth.welcome')}，{user.username} ({user.role === 'admin' ? t('auth.admin') : t('auth.guest')})
+              欢迎，{user.username} ({user.role === 'admin' ? '管理员' : '访客'})
             </span>
             <button
               onClick={onLogout}
               className="px-4 py-1.5 text-sm bg-gray-700 text-gray-300 rounded-md hover:bg-gray-600 transition"
             >
-              {t('auth.logout')}
+              退出登录
             </button>
           </div>
         </div>
@@ -225,7 +221,7 @@ export default function MainContent({ user, onLogout }: MainContentProps) {
             className="flex-1 bg-[#1a1a1a] rounded-lg p-3 overflow-y-auto font-mono text-xs text-gray-400 border border-gray-800"
           >
             {logs.length === 0 ? (
-              <div className="text-gray-600">{t('logs.noLogs')}</div>
+              <div className="text-gray-600">暂无日志</div>
             ) : (
               logs.map((log, index) => (
                 <div key={index} className="whitespace-pre-wrap break-all py-0.5">

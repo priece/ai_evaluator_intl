@@ -1,9 +1,8 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { RoundStatus } from '@/types';
+import { RoundStatus, RoundStatusLabels } from '@/types';
 import { parseTime, formatTime } from '@/lib/timeUtils';
-import { useTranslations } from '@/lib/i18n';
 
 interface Session {
   id: string;
@@ -54,10 +53,6 @@ export default function BusinessPanel({
   onRoundUpdate,
   onPublish
 }: BusinessPanelProps) {
-  const t = useTranslations();
-  const tBusiness = useTranslations('businessPanel');
-  const tStatus = useTranslations('status');
-  const tTime = useTranslations('time');
   const isAdmin = user.role === 'admin';
   const [sessions, setSessions] = useState<Session[]>([]);
   const [rounds, setRounds] = useState<Round[]>([]);
@@ -77,7 +72,7 @@ export default function BusinessPanel({
   const formatDuration = (seconds: number): string => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
-    return `${mins} ${tTime('minute')} ${secs} ${tTime('second')}`;
+    return `${mins} 分 ${secs} 秒`;
   };
 
   const getPerformanceDuration = (round: Round): string | null => {
@@ -183,7 +178,7 @@ export default function BusinessPanel({
 
   const createSession = async () => {
     if (!newSessionName.trim()) {
-      alert(tBusiness('pleaseEnterSessionName'));
+      alert('请输入场次名称');
       return;
     }
     try {
@@ -206,7 +201,7 @@ export default function BusinessPanel({
 
   const createNewRound = async () => {
     if (!selectedSession) {
-      alert(tBusiness('noSessionSelected'));
+      alert('请先选择场次');
       return;
     }
     try {
@@ -293,30 +288,18 @@ export default function BusinessPanel({
     return classes[status] || 'bg-gray-700 text-gray-300';
   };
 
-  const getStatusLabel = (status: number): string => {
-    const statusMap: Record<number, string> = {
-      0: 'notStarted',
-      1: 'performing',
-      2: 'performanceEnded',
-      3: 'evaluating',
-      4: 'evaluated',
-      5: 'roundEnded'
-    };
-    return tStatus(statusMap[status] || 'notStarted');
-  };
-
   return (
     <div className="h-full flex flex-col space-y-4">
       {/* 场次管理 */}
       <div className="bg-[#1a1a1a] rounded-lg shadow-md p-4 border border-gray-800">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-lg font-semibold text-gray-100">{tBusiness('sessionManagement')}</h2>
+          <h2 className="text-lg font-semibold text-gray-100">场次管理</h2>
           <button
             onClick={() => setIsModalOpen(true)}
             disabled={!isAdmin}
             className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {tBusiness('createSession')}
+            新建场次
           </button>
         </div>
 
@@ -328,7 +311,7 @@ export default function BusinessPanel({
           }}
           className="w-full bg-[#252525] border border-gray-600 rounded-lg px-3 py-2 text-gray-100"
         >
-          <option value="">{tBusiness('selectSession')}</option>
+          <option value="">请选择场次</option>
           {sessions.map((s) => {
           return (
             <option key={s.session_id} value={s.session_id}>
@@ -341,14 +324,14 @@ export default function BusinessPanel({
         {selectedSession && (
           <div className="mt-4 p-3 bg-[#252525] rounded-lg border border-gray-700">
             <div className="text-sm text-gray-400">
-              <span className="font-medium text-gray-300">{tBusiness('sessionName')}：</span>{selectedSession.name}
+              <span className="font-medium text-gray-300">场次名称：</span>{selectedSession.name}
             </div>
             <div className="text-sm text-gray-400 mt-1 flex justify-between">
               <div>
-                <span className="font-medium text-gray-300">{tBusiness('currentRound')}：</span>{rounds.length > 0 ? Math.max(...rounds.map(r => r.round_number)) : 0}
+                <span className="font-medium text-gray-300">当前宣讲轮次：</span>{rounds.length > 0 ? Math.max(...rounds.map(r => r.round_number)) : 0}
               </div>
               <div>
-                <span className="font-medium text-gray-300">{tBusiness('createdAt')}：</span>{formatTime(selectedSession.created_at)}
+                <span className="font-medium text-gray-300">创建时间：</span>{formatTime(selectedSession.created_at)}
               </div>
             </div>
           </div>
@@ -358,7 +341,7 @@ export default function BusinessPanel({
       {/* 宣讲管理 */}
       <div className="bg-[#1a1a1a] rounded-lg shadow-md p-4 flex-1 flex flex-col overflow-hidden border border-gray-800">
         <div className="flex justify-between items-center mb-4 flex-shrink-0">
-          <h2 className="text-lg font-semibold text-gray-100">{tBusiness('presentationManagement')}</h2>
+          <h2 className="text-lg font-semibold text-gray-100">宣讲活动管理</h2>
           {selectedSession && (() => {
             const maxRoundNum = rounds.length > 0 ? Math.max(...rounds.map(r => r.round_number)) : 0;
             let canCreateRound = false;
@@ -373,7 +356,7 @@ export default function BusinessPanel({
                 onClick={createNewRound}
                 disabled={!canCreateRound || !isAdmin}
                 className="w-8 h-8 flex items-center justify-center bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed text-xl font-bold"
-                title={tBusiness('createPresentation')}
+                title="新建宣讲"
               >
                 +
               </button>
@@ -384,7 +367,7 @@ export default function BusinessPanel({
         <div ref={scrollContainerRef} className="flex-1 overflow-auto">
           {rounds.length === 0 ? (
             <div className="text-center text-gray-500 py-8">
-              {selectedSession ? tBusiness('noPresentations') : tBusiness('noSessionSelected')}
+              {selectedSession ? '暂无宣讲，请新建宣讲' : '请先选择场次'}
             </div>
           ) : (
             <div className="space-y-3">
@@ -397,7 +380,7 @@ export default function BusinessPanel({
                 onClick={() => onRoundChange(round)}
               >
                 <div className="flex justify-between items-center">
-                  <span className="font-medium text-gray-100">{tBusiness('roundN', { n: round.round_number })}</span>
+                  <span className="font-medium text-gray-100">第 {round.round_number} 位宣讲员</span>
                   <div className="text-lg font-bold text-blue-400">
                     {round.status === RoundStatus.PERFORMING ? (
                       <svg className="animate-spin h-6 w-6 text-blue-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -405,7 +388,7 @@ export default function BusinessPanel({
                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                       </svg>
                     ) : round.score !== null ? (
-                      `${round.score.toFixed(1)} ${tBusiness('score')}`
+                      `${round.score.toFixed(1)} 分`
                     ) : null}
                   </div>
                 </div>
@@ -419,7 +402,7 @@ export default function BusinessPanel({
                       disabled={!isAdmin}
                       className="px-3 py-1 text-xs bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      {tBusiness('startPresentation')}
+                      开始宣讲
                     </button>
                   )}
                   {round.status === RoundStatus.PERFORMING && (
@@ -428,7 +411,7 @@ export default function BusinessPanel({
                       disabled={!isAdmin}
                       className="px-3 py-1 text-xs bg-yellow-600 text-white rounded hover:bg-yellow-700 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      {tBusiness('endPresentation')}
+                      结束宣讲
                     </button>
                   )}
                   {round.status === RoundStatus.PERFORMANCE_ENDED && (
@@ -437,12 +420,12 @@ export default function BusinessPanel({
                       disabled={evaluatingRoundId === round.id || !isAdmin}
                       className="px-3 py-1 text-xs bg-purple-600 text-white rounded hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      {evaluatingRoundId === round.id ? tBusiness('evaluating') : tBusiness('startEvaluation')}
+                      {evaluatingRoundId === round.id ? '评估中...' : '开始评估'}
                     </button>
                   )}
                   {round.status === RoundStatus.EVALUATING && (
                     <span className="px-3 py-1 text-xs text-purple-400 animate-pulse">
-                      {tBusiness('waitingForKey')}
+                      等待键盘输入(0-9)...
                     </span>
                   )}
                   {round.status === RoundStatus.EVALUATED && (
@@ -451,7 +434,7 @@ export default function BusinessPanel({
                       disabled={evaluatingRoundId === round.id || !isAdmin}
                       className="px-3 py-1 text-xs bg-purple-600 text-white rounded hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      {evaluatingRoundId === round.id ? tBusiness('evaluating') : tBusiness('reevaluate')}
+                      {evaluatingRoundId === round.id ? '评估中...' : '重新评估'}
                     </button>
                   )}
                   {/* 高亮的轮次在已评估或已发布状态时显示发布按钮 */}
@@ -461,7 +444,7 @@ export default function BusinessPanel({
                       disabled={!isAdmin}
                       className="px-3 py-1 text-xs bg-indigo-600 text-white rounded hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      {tBusiness('publish')}
+                      发布
                     </button>
                   )}
                   {/* 表演时长 */}
@@ -469,7 +452,7 @@ export default function BusinessPanel({
                     const duration = getPerformanceDuration(round);
                     if (!duration) return null;
                     const isPerforming = round.status === RoundStatus.PERFORMING;
-                    const label = isPerforming ? tBusiness('elapsedDuration') : tBusiness('presentationDuration');
+                    const label = isPerforming ? '已宣讲时长' : '宣讲时长';
                     const color = isPerforming ? '#89c414' : '#c6771b';
                     return (
                       <span className="px-3 py-1 text-sm font-medium" style={{ color }}>
@@ -479,7 +462,7 @@ export default function BusinessPanel({
                   })()}
                   </div>
                   <span className={`px-2 py-0.5 text-xs rounded-full ${getStatusBadgeClass(round.status)}`}>
-                    {getStatusLabel(round.status)}
+                    {RoundStatusLabels[round.status as RoundStatus]}
                   </span>
                 </div>
               </div>
@@ -493,12 +476,12 @@ export default function BusinessPanel({
       {isModalOpen && (
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
           <div className="bg-[#1a1a1a] rounded-lg p-6 w-96 border border-gray-700">
-            <h3 className="text-lg font-semibold mb-4 text-gray-100">{tBusiness('createSessionTitle')}</h3>
+            <h3 className="text-lg font-semibold mb-4 text-gray-100">新建场次</h3>
             <input
               type="text"
               value={newSessionName}
               onChange={(e) => setNewSessionName(e.target.value)}
-              placeholder={tBusiness('sessionNamePlaceholder')}
+              placeholder="请输入场次名称"
               className="w-full bg-[#252525] border border-gray-600 rounded-lg px-3 py-2 mb-4 text-gray-100 placeholder-gray-500"
             />
             <div className="flex justify-end space-x-2">
@@ -506,13 +489,13 @@ export default function BusinessPanel({
                 onClick={() => setIsModalOpen(false)}
                 className="px-4 py-2 bg-gray-700 text-gray-300 rounded-lg hover:bg-gray-600"
               >
-                {t('common.cancel')}
+                取消
               </button>
               <button
                 onClick={createSession}
                 className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
               >
-                {t('common.ok')}
+                确定
               </button>
             </div>
           </div>
